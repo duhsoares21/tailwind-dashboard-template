@@ -21,9 +21,30 @@ export const hexToRGB = (h) => {
   return `${+r},${+g},${+b}`;
 };
 
-export const formatValue = (value) => Intl.NumberFormat('en-US', {
+export const formatValue = (value) => Intl.NumberFormat('pt-BR', {
   style: 'currency',
-  currency: 'USD',
-  maximumSignificantDigits: 3,
-  notation: 'compact',
+  currency: 'BRL',
+  maximumFractionDigits: 2,
 }).format(value);
+
+export const formatDate = (date) => {
+  const _date = new Date(date);
+
+  const day = _date.getDate() < 10 ? "0"+_date.getDate() : _date.getDate();
+  const month = parseInt(_date.getMonth())+1 < 10 ? "0"+(_date.getMonth()+1) : _date.getMonth()+1;
+  const year = _date.getFullYear();
+
+  const formattedDate = day+"/"+month+"/"+year;
+
+  return formattedDate;
+}
+
+export const USDate = (date) => {
+  const day = date.getDate() < 10 ? "0"+date.getDate() : date.getDate();
+  const month = parseInt(date.getMonth())+1 < 10 ? "0"+(date.getMonth()+1) : date.getMonth()+1;
+  const year = date.getFullYear();
+
+  const formattedDate = year+"-"+month+"-"+day;
+
+  return formattedDate;
+}

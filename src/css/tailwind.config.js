@@ -13,6 +13,7 @@ module.exports = {
         md: '0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.02)',
         lg: '0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.01)',
         xl: '0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.01)',
+        modal: '8px 9px 1px #0000004a'
       },
       outline: {
         blue: '2px solid rgba(0, 112, 244, 0.5)',

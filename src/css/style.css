@@ -8,3 +8,9 @@
 @import 'additional-styles/flatpickr.css';
 
 @import 'tailwindcss/utilities';
+
+@layer base {
+	img {
+		height: unset;
+	}
+  }

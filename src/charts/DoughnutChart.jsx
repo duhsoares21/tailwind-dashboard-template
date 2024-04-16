@@ -4,8 +4,10 @@ import { useThemeProvider } from '../utils/ThemeContext';
 import { chartColors } from './ChartjsConfig';
 import {
   Chart, DoughnutController, ArcElement, TimeScale, Tooltip,
-} from 'chart.js';
+} from 'chart.js/auto';
 import 'chartjs-adapter-moment';
+
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 // Import utilities
 import { tailwindConfig } from '../utils/Utils';
@@ -15,7 +17,8 @@ Chart.register(DoughnutController, ArcElement, TimeScale, Tooltip);
 function DoughnutChart({
   data,
   width,
-  height
+  height,
+  updateCategorias
 }) {
 
   const [chart, setChart] = useState(null)
@@ -29,7 +32,7 @@ function DoughnutChart({
     const ctx = canvas.current;
     // eslint-disable-next-line no-unused-vars
     const newChart = new Chart(ctx, {
-      type: 'doughnut',
+      type: 'bar',
       data: data,
       options: {
         cutout: '80%',
@@ -46,6 +49,15 @@ function DoughnutChart({
             backgroundColor: darkMode ? tooltipBgColor.dark : tooltipBgColor.light,
             borderColor: darkMode ? tooltipBorderColor.dark : tooltipBorderColor.light,
           },
+          datalabels: {
+            display: true, // Show data values
+            anchor: "center", // Position of the value (e.g., "end", "start", "center")
+            align: "center", // Alignment of the value (e.g., "top", "bottom", "center")
+            color: "red", // Color of the value
+            font: {
+              size: 20 // Font size of the value
+            }
+          }
         },
         interaction: {
           intersect: false,
@@ -106,8 +118,16 @@ function DoughnutChart({
     });
     setChart(newChart);
     return () => newChart.destroy();
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => { 
+    if(chart !== null && data !== null) {
+      chart.data = data;
+      chart.update();
+    }
+}, [data, chart]);
 
   useEffect(() => {
     if (!chart) return;
@@ -131,9 +151,13 @@ function DoughnutChart({
       <div>
         <canvas ref={canvas} width={width} height={height}></canvas>
       </div>
-      <div className="px-5 pt-2 pb-6">
-        <ul ref={legend} className="flex flex-wrap justify-center -m-1"></ul>
-      </div>
+      {
+        /*
+        <div className="px-5 pt-2 pb-6">
+          <ul ref={legend} className="flex flex-wrap justify-center -m-1"></ul>
+        </div>
+        */
+      }
     </div>
   );
 }

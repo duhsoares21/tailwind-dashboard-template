@@ -1,25 +1,41 @@
 import React from 'react';
 import Flatpickr from 'react-flatpickr';
+import { Portuguese } from "flatpickr/dist/l10n/pt.js"
+import { adicionaUmMes } from '../utils/helper';
 
 function Datepicker({
-  align
+  monthOnly, setCurrentMonth, setCurrentYear
 }) {
 
   const options = {
-    mode: 'range',
+    locale: Portuguese,
+    mode: 'single',
     static: true,
     monthSelectorType: 'static',
-    dateFormat: 'M j, Y',
-    defaultDate: [new Date().setDate(new Date().getDate() - 6), new Date()],
+    altInput: true,
+    altFormat: 'F',
+    dateFormat: 'Y-m-d',
+    defaultDate: new Date().setDate(1),
+    enable: [
+      function(date) {
+        return monthOnly ? (date.getMonth() > -1 && date.getDate() < 2) :true
+      }
+    ],
     prevArrow: '<svg class="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M5.4 10.8l1.4-1.4-4-4 4-4L5.4 0 0 5.4z" /></svg>',
     nextArrow: '<svg class="fill-current" width="7" height="11" viewBox="0 0 7 11"><path d="M1.4 10.8L0 9.4l4-4-4-4L1.4 0l5.4 5.4z" /></svg>',
     onReady: (selectedDates, dateStr, instance) => {
-      instance.element.value = dateStr.replace('to', '-');
-      const customClass = (align) ? align : '';
-      instance.calendarContainer.classList.add(`flatpickr-${customClass}`);
+      const month = dateStr.split("-")[1];
+      const year = dateStr.split("-")[0];
+      const currentMonth = parseInt(month) < 10 ? parseInt(month.replace("0","")) : parseInt(month);
+      setCurrentMonth(currentMonth);
+      setCurrentYear(year);
     },
     onChange: (selectedDates, dateStr, instance) => {
-      instance.element.value = dateStr.replace('to', '-');
+      const month = dateStr.split("-")[1];
+      const year = dateStr.split("-")[0];
+      const currentMonth = parseInt(month) < 10 ? parseInt(month.replace("0","")) : parseInt(month);
+      setCurrentMonth(currentMonth);
+      setCurrentYear(year);
     },
   }
 
